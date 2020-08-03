@@ -7,7 +7,20 @@
 </head>
 <body>
   
-  <canvas id="canvas" width="100" height="100"></canvas>
+<canvas id="canvas" width="300" height="300" style="border: 1px solid black"></canvas>
 
+<script>
+
+const canvas = document.querySelector('#canvas');
+const context = canvas.getContext('2d');
+
+function drawRect(params) {
+  context.fillStyle = 'black';
+  context.fillRect(10, 10, 50, 50);
+}
+
+drawRect();
+
+</script>
 </body>
 </html>
