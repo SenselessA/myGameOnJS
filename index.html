@@ -11,15 +11,63 @@
 
 <script>
 
+let gameEngine;
+
 const canvas = document.querySelector('#canvas');
 const context = canvas.getContext('2d');
 
+let x = 10,
+    y = 10;
+
 function drawRect(params) {
   context.fillStyle = 'black';
-  context.fillRect(10, 10, 50, 50);
+  context.clearRect(0, 0, 300, 300);
+  context.fillRect(x, y, 50, 50);
 }
 
-drawRect();
+const nextGameStep = (() => {
+  return requestAnimationFrame ||
+  webkitRequestAnimationFrame  ||
+  mozRequestAnimationFrame     ||
+  oRequestAnimationFrame       ||
+  msRequestAnimationFrame      ||
+  function (callback) {
+    setTimeout(callback, 1000 / 60);
+  };
+})();
+
+let gameEngineStart = (callback) => {
+  gameEngine = callback;
+  gameEngineStep();
+}
+
+const gameEngineStep = () => {
+  gameEngine();
+  nextGameStep(gameEngineStep);
+}
+
+const setGameEngine = (callback) => {
+  gameEngine = callback;
+}
+
+const gameLoopRight = () => {
+  drawRect();
+  x+=5;
+  if ( x >= 250) {
+    setGameEngine(gameLoopLeft);
+  }
+}
+
+const gameLoopLeft = () => {
+  drawRect();
+  x-=5;
+  if (x <= 00) {
+    setGameEngine(gameLoopRight);
+  }
+  
+}
+
+gameEngineStart(gameLoopRight);
 
 </script>
 </body>
